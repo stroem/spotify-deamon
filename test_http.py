@@ -39,7 +39,13 @@ connection.close()
 ############################
 import os
 
-directory = os.listdir('.')
-for filename in directory:
-    if filename[-3:] == 'pyc':
-        os.remove(filename)
+def remove_pyc(dir = '.'):
+	directory = os.listdir(dir)
+	for file in directory:
+		path = dir + '/' + file
+		if os.path.isdir(path) and file not in ['.', '..']:
+			remove_pyc(path)
+		elif file[-4:] == '.pyc':
+			os.remove(path)
+
+remove_pyc()

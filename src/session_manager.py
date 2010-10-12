@@ -6,6 +6,7 @@ import time
 import threading
 
 from userinterface import *
+from http_requests import *
 
 from spotify.manager import SpotifySessionManager
 try:
@@ -23,7 +24,7 @@ class SessionManager(SpotifySessionManager):
     def __init__(self, *a, **kw):
         SpotifySessionManager.__init__(self, *a, **kw)
         self.audio = AlsaController()
-        self.ui = JukeboxUI(self)
+        self.ui = HTTPRequests(self)
         self.ctr = None
         self.playing = False
         self._queue = []
@@ -85,7 +86,8 @@ class SessionManager(SpotifySessionManager):
             self.stop()
 
     def end_of_track(self, sess):
-        self.next()
+        #self.next()
+        self.playing = False
         print "Track ends"
 
     def search(self, query, callback):
