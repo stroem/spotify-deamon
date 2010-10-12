@@ -28,16 +28,24 @@ class JukeboxUI(cmd.Cmd, threading.Thread):
         self.cmdloop()
 
     def do_quit(self, line):
-        print "Goodbye!"
-        self.jukebox.terminate()
-        return True
+		link = Link.from_string("spotify:track:5sCCUyrCF2u9LerPMUsmlY")
+		track = link.as_track()
+		while(track.is_loaded() != 1):
+			pass
+			
+		self.jukebox.load_track(track)
+		self.jukebox.play()
+		
+        #print "Goodbye!"
+        #self.jukebox.terminate()
+        #return True
 
     def do_list(self, line):
         """ List the playlists, or the contents of a playlist """
         if not line:
             for i, p in enumerate(self.jukebox.ctr):
                 if p.is_loaded():
-                    print "%3d %s" % (i, p.name())
+					print "%3d %s" % (i, p.name())
                 else:
                     print "%3d %s" % (i, "loading...")
         else:

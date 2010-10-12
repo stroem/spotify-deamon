@@ -33,20 +33,25 @@ class SessionManager(SpotifySessionManager):
         self.session = session
         try:
             self.ctr = session.playlist_container()
-            self.ui.start()
+            self.ui.start()    
         except:
             traceback.print_exc()
 
     def load_track(self, track):
-        if self.playing:
-            self.stop()
+		if self.playing:
+			self.stop()
 
-        self.session.load(track)
-        print "Loading %s" % track.name()
+		while(track.is_loaded() != 1):
+			pass
+
+		self.session.load(track)
+		print "Loading %s" % track.name()
 
     def load(self, playlist, track):
         if self.playing:
             self.stop()
+            
+        print type(self.ctr[playlist][track])
         self.session.load(self.ctr[playlist][track])
         print "Loading %s from %s" % (self.ctr[playlist][track].name(), self.ctr[playlist].name())
 
